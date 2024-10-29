@@ -5,6 +5,7 @@ import LoginLayout from "./components/layouts/LoginLayout";
 import { ToastContainer } from "react-toastify";
 import { NotFound } from './pages/statusCode/NotFound';
 import "react-toastify/dist/ReactToastify.css";
+import { SnackbarProvider } from "./context/SnackbarContext";
 
 function App() {
     return (
