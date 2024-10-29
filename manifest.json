@@ -1,0 +1,67 @@
+{
+  "name": "Lucid Dreams",
+  "short_name": "Dreams",
+  "categories": ["social"],
+  "start_url": "https://app-lucid-dreams.glitch.me/login",
+  "scope": ".",
+  "shortcuts" : [],
+   "icons": [
+        {
+          "src": "https://cdn.glitch.global/6db14119-43b6-433c-a071-924b6c869839/144-144.jpeg?v=1649263127255",
+          "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any"
+        },
+        {
+          "src": "https://cdn.glitch.global/6db14119-43b6-433c-a071-924b6c869839/144-144.jpeg?v=1649263127255",
+          "sizes": "192x192",
+        "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.glitch.global/6db14119-43b6-433c-a071-924b6c869839/144-144.jpeg?v=1649263127255",
+          "sizes": "144x144",
+        "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.glitch.global/6db14119-43b6-433c-a071-924b6c869839/144-144.jpeg?v=1649263127255",
+          "sizes": "96x96",
+        "type": "image/jpeg"        
+        },
+        {
+          "src": "https://cdn.glitch.global/6db14119-43b6-433c-a071-924b6c869839/144-144.jpeg?v=1649263127255",
+          "sizes": "72x72",
+        "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.glitch.global/6db14119-43b6-433c-a071-924b6c869839/144-144.jpeg?v=1649263127255",
+          "sizes": "48x48",
+        "type": "image/jpeg"
+        },
+           {
+          "src": "https://cdn.glitch.global/6db14119-43b6-433c-a071-924b6c869839/144-144.jpeg?v=1649263127255",
+          "sizes": "32x32",
+        "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.glitch.global/6db14119-43b6-433c-a071-924b6c869839/144-144.jpeg?v=1649263127255",
+          "sizes": "16x16",
+        "type": "image/jpeg"
+        }
+
+      ],
+  "orientation": "portrait-primary",
+  "screenshots" : [
+    {
+      "src": "",
+      "sizes": "512x512",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Screenshot"
+    }
+  ],
+  
+  "display_override": ["window-control-overlay", "minimal-ui"],
+  "display": "fullscreen",
+  "background_color": "#3E4EB8",
+  "theme_color": "#2F3BA2"
+}
