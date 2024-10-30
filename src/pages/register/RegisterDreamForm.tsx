@@ -6,6 +6,9 @@ import { DreamRegisterDTO } from "../../dtos/DreamDTOs";
 import { useAI } from "../../context/AIContext";
 import { getDatabase, ref, set } from "firebase/database";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { createResponse } from "../../dtos/ResponseDTOs";
+import { useSnackbar } from "../../context/SnackbarContext";
 
 export const RegisterDreamForm = () => {
     const { generateImageBase64, collectDreamDataPrompt, getTextResponse, loading } = useAI();
@@ -16,6 +19,8 @@ export const RegisterDreamForm = () => {
         date: ""
     });
     const db = getDatabase();
+    const navigate = useNavigate();
+    const { showSnackbar } = useSnackbar();
 
     const [error, setError] = useState<string | null>(null);
     const isFormValid = formData.title.trim() !== "" && formData.description.trim() !== "" && formData.date.trim() !== "";
@@ -35,7 +40,8 @@ export const RegisterDreamForm = () => {
         try {
             base64 = await generateImageBase64(formData.description);
         } catch (error) {
-            console.error("Erro ao gerar a imagem base64: ", error);
+            
+            showSnackbar("Não foi possível criar uma imagem para seu sonho no momento!", "error");
             base64 = "";
         }
     
@@ -47,10 +53,10 @@ export const RegisterDreamForm = () => {
                 date: formData.date,
                 imageBase64: base64,
             });
-            console.log("Sonho registrado com sucesso!");
+            showSnackbar("Sonho criado com sucesso.", "success");
+            navigate("/my/dream");
         } catch (error) {
-            console.error("Erro ao registrar o sonho: ", error);
-            setError("Falha ao salvar os dados.");
+            showSnackbar("Ocorreu um erro ao criar seu sonho... Tente novamente mais tarde!", "error");
         }
     };
     

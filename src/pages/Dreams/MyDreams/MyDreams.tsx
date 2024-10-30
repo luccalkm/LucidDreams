@@ -36,6 +36,7 @@ export const MyDreams = () => {
                     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
                     .slice(0, 6);
                 setDreamsData(sortedData);
+                console.log(sortedData)
             } else {
                 console.log("Nenhum sonho encontrado para este usuário.");
                 setDreamsData([]);
