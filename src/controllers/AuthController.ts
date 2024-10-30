@@ -4,39 +4,55 @@ import {
     sendEmailVerification,
     User,
     UserCredential,
+    fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import { auth, googleProvider, database } from "../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { ref, set } from "firebase/database";
-import { UserDTO, UserRegisterDTO } from "../dtos/UserDTOs";
+import { UserDTO, UserLoginDTO, UserRegisterDTO, UserResponseLoginDTO } from "../dtos/UserDTOs";
 import { createResponse, ResponseDTO } from "../dtos/ResponseDTOs";
 import { mapUserToDTO } from "../utils/mappers";
 
-export const loginUser = async (email: string, password: string): Promise<User | undefined> => {
+export const loginUser = async (credential: UserLoginDTO): Promise<ResponseDTO<UserResponseLoginDTO | null>> => {
     try {
-        const userCredential: UserCredential = await signInWithEmailAndPassword(auth, email, password);
-        return userCredential.user;
+        const signInMethods = await fetchSignInMethodsForEmail(auth, credential.email);
+        if (signInMethods.length === 0) 
+            return createResponse(false, null, "Usuário não encontrado.");
+
+        const userCredential: UserCredential = await signInWithEmailAndPassword(auth, credential.email, credential.password);
+        const userResponseDTO: UserResponseLoginDTO = {
+            uid: userCredential.user.uid,
+            email: userCredential.user.email
+        };
+        
+        return createResponse(true, userResponseDTO, "Login realizado com sucesso.");
     } catch (error) {
-        console.error("Erro ao fazer login:", error);
+        return createResponse(false, null, "Falha ao realizar login.");
     }
 };
 
 export const registerUser = async (newUser : UserRegisterDTO): Promise<ResponseDTO<UserDTO | null>> => {
+    let user: User | null = null;
+
     try {
         const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, newUser.email, newUser.password);
-        const user: User = userCredential.user;
+        user = userCredential.user;
+        
+        if(!user.emailVerified)
+            await sendEmailVerification(user);
 
-        await saveUserData(user.uid, newUser.name, newUser.email, newUser.dateOfBirth);
-
-        await sendEmailVerification(user);
-
-        console.log("E-mail de verificação enviado para:", newUser.email);
+        const response = await saveUserData(user.uid, newUser);
+        if(!response.success)
+            throw new Error(response.message)
 
         const userDTO = mapUserToDTO(user);
 
         return createResponse(true, userDTO, "Registro realizado com sucesso.");
-    } catch (error) {
-        return createResponse(false, null, "Erro ao cadastrar.");
+    } catch (error: any) {
+        if (error.code === 'auth/email-already-in-use') {
+            return createResponse(false, null, "Credenciais inválidas.");
+        }
+        return createResponse(false, null, error?.message ?? "Erro ao cadastrar.");
     }
 };
 
@@ -59,18 +75,17 @@ export const signInWithGoogle = async (): Promise<User | undefined> => {
 
 export const saveUserData = async (
     uid: string,
-    name: string,
-    email: string,
-    dateOfBirth: string | null
-): Promise<void> => {
+    userData : UserRegisterDTO
+): Promise<ResponseDTO<UserDTO | null>> => {
     try {
-        console.log("uid",uid)
         await set(ref(database, `users/${uid}`), {
-            name: name,
-            email: email,
-            dateOfBirth: dateOfBirth,
+            name: userData.name,
+            email: userData.email,
+            dateOfBirth: userData.dateOfBirth,
         });
+
+        return createResponse(true, null, "Salvo com sucesso no banco de dados.");
     } catch (error) {
-        console.error("Erro ao salvar dados:", error);
+        return createResponse(false, null, "Erro ao salvar no banco de dados.");
     }
 };

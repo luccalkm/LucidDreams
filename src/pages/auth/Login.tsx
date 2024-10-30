@@ -10,23 +10,46 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import GoogleIcon from '@mui/icons-material/Google';
+import { UserLoginDTO } from "../../dtos/UserDTOs";
+import { useSnackbar } from "../../context/SnackbarContext";
+import { validateEmail } from "../../utils/validationsUtils";
 
 const LoginPage = () => {
-    const [loginForm, setLoginForm] = useState({
+    const [loginForm, setLoginForm] = useState<UserLoginDTO>({
         email: '',
         password: ''
     });
     const theme = useTheme();
     const [loading, setLoading] = useState(false);
-
-    const handleSubmit = async (e) => {
+    const { showSnackbar } = useSnackbar();
+    
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
-        const { email, password } = loginForm;
         setLoading(true);
+
+        let errorMessage = "";
+
+        if (!loginForm.email || !loginForm.password)
+            errorMessage = "Todos os campos são obrigatórios.";
+        
+        if (errorMessage === "" && !validateEmail(loginForm.email))
+            errorMessage = "O E-mail fornecido não é válido.";
+        
+        if (errorMessage) {
+            showSnackbar(errorMessage, "error");
+            setLoading(false);
+            return;
+        }
+
         try {
-            await loginUser(email, password);
-        } catch (error) {
-            console.error("Erro ao fazer login:", error);
+            const response = await loginUser(loginForm);
+
+            if(!response.success)
+                throw new Error(response?.message);
+
+        } catch (error: any) {
+            const errorMessage = error?.message || "Erro ao realizar login. Verifique os dados e tente novamente.";
+            showSnackbar(errorMessage, "error");
         } finally {
             setLoading(false);
         }
@@ -155,8 +178,8 @@ const LoginPage = () => {
                     <Grid2 container justifyContent="center" sx={{ mt: theme.spacing(2) }}>
                         <Grid2>
                             <Button
-                                color="secondary"
-                                variant='contained'
+                                color="primary"
+                                variant='outlined'
                                 onClick={handleGoogleLogin}
                                 startIcon={<GoogleIcon />}
                                 fullWidth

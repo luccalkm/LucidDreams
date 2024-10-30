@@ -12,3 +12,14 @@ export interface UserDTO {
     dateOfBirth: string | null;
     emailVerified: boolean;
 }
+
+export interface UserResponseLoginDTO {
+    uid: string;
+    email: string | null;
+    displayName?: string;
+}
+
+export interface UserLoginDTO {
+    email: string;
+    password: string;
+}

@@ -10,6 +10,7 @@ export const mapUserToDTO = (user: User): UserDTO => ({
     emailVerified: user.emailVerified,
 });
 
+
 export const mapDreamToDTO = (
     id: string,
     title: string,
