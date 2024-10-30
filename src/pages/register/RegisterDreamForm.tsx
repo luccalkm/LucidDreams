@@ -27,17 +27,25 @@ export const RegisterDreamForm = () => {
             [name]: value,
         });
     };
-
     const handleSubmit = async () => {
         if (!isFormValid) return;
-
+    debugger;
+        let base64 = "";
+    
+        try {
+            base64 = await generateImageBase64(formData.description);
+        } catch (error) {
+            console.error("Erro ao gerar a imagem base64: ", error);
+            base64 = "";
+        }
+    
         try {
             const newDreamRef = ref(db, `dreams/${getLoggedId()}/${crypto.randomUUID()}`);
             await set(newDreamRef, {
                 title: formData.title,
                 description: formData.description,
                 date: formData.date,
-                imageBase64: "",
+                imageBase64: base64,
             });
             console.log("Sonho registrado com sucesso!");
         } catch (error) {
@@ -45,6 +53,7 @@ export const RegisterDreamForm = () => {
             setError("Falha ao salvar os dados.");
         }
     };
+    
 
     return (
         <DarkerStyledPaper sx={{ padding: 3 }}>

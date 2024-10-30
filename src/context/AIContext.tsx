@@ -25,7 +25,7 @@ export const AIProvider: React.FC<{ children: ReactNode; }> = ({ children }) => 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const huggingFaceApiKey = "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";
+    const huggingFaceApiKey = "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"; //chave temporária 1dia gratuita
 
     const collectDreamDataPrompt = (title: string, description: string): string => {
         return `
@@ -40,15 +40,15 @@ export const AIProvider: React.FC<{ children: ReactNode; }> = ({ children }) => 
         `;
     };
 
-    const generateImageBase64 = async (prompt: string) => {
+    const generateImageBase64 = async (prompt: string): Promise<string> => {
         try {
             const response = await axios.post(
                 'https://api-inference.huggingface.co/models/CompVis/stable-diffusion-v1-4',
                 {
-                    "inputs": prompt,
-                    "parameters": {
-                        "num_inference_steps": 90,
-                        "guidance_scale": 7.5
+                    inputs: prompt,
+                    parameters: {
+                        num_inference_steps: 90,
+                        guidance_scale: 7.5
                     }
                 },
                 {
@@ -56,12 +56,12 @@ export const AIProvider: React.FC<{ children: ReactNode; }> = ({ children }) => 
                         Authorization: `Bearer ${huggingFaceApiKey}`,
                         'Content-Type': 'application/json',
                     },
+                    responseType: 'blob'
                 }
             );
 
-            const imageBuffer = Buffer.from(response.data, 'binary').toString('base64');
-
-            return `${imageBuffer}`;
+            const base64Image = await toBase64(response.data);
+            return base64Image;
         } catch (err) {
             console.error('Erro ao gerar a imagem:', err);
             throw new Error('Erro ao gerar a imagem');
@@ -75,10 +75,11 @@ export const AIProvider: React.FC<{ children: ReactNode; }> = ({ children }) => 
             const response = await axios.post(
                 `https://api-inference.huggingface.co/models/EleutherAI/gpt-neo-1.3B`,
                 {
-                    inputs: prompt, "parameters": {
-                        "max_new_tokens": 150,
-                        "temperature": 0.9,
-                        "top_p": 0.85
+                    inputs: prompt,
+                    parameters: {
+                        max_new_tokens: 150,
+                        temperature: 0.9,
+                        top_p: 0.85
                     }
                 },
                 {
@@ -97,6 +98,15 @@ export const AIProvider: React.FC<{ children: ReactNode; }> = ({ children }) => 
             setLoading(false);
             throw err;
         }
+    };
+
+    const toBase64 = (file: Blob): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.onerror = (error) => reject(error);
+        });
     };
 
     return (
