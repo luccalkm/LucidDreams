@@ -15,6 +15,11 @@ import { mapUserToDTO } from "../utils/mappers";
 export const loginUser = async (credential: UserLoginDTO): Promise<ResponseDTO<UserResponseLoginDTO | null>> => {
     try {
         const userCredential: UserCredential = await signInWithEmailAndPassword(auth, credential.email, credential.password);
+        
+        if(!userCredential.user.emailVerified) {
+            return createResponse(false, null, "Não foi possível realizar login. Email não confirmado.");
+        }
+
         const userResponseDTO: UserResponseLoginDTO = {
             uid: userCredential.user.uid,
             email: userCredential.user.email
