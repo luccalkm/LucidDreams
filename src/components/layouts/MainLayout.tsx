@@ -2,11 +2,13 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import * as React from 'react';
 import { extendTheme } from '@mui/material/styles';
 import LayersIcon from '@mui/icons-material/Layers';
-import { AppProvider, NavigationItem } from '@toolpad/core/AppProvider';
+import { AppProvider, NavigationItem, Session } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { Box } from "@mui/material";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { MyDreams } from "../../pages/Dreams/MyDreams/MyDreams";
+import { useAuth } from "../../context/AuthContext";
+import { getUserByUID } from "../../controllers/UserController";
 
 const NAVIGATION: NavigationItem[] = [
     {
@@ -59,8 +61,44 @@ const demoTheme = extendTheme({
     },
 });
 
+const DEFAULT_SESSION = {
+    name: '',
+    email: '',
+};
 
 const MainLayout: React.FC = () => {
+    const { logout, loginResponse } = useAuth();
+    const navigate = useNavigate();
+
+    const [session, setSession] = React.useState<Session | null>(null);
+    const authentication = React.useMemo(() => {
+        return {
+            signIn: () => {
+                setSession({ user: DEFAULT_SESSION });
+            },
+            signOut: () => {
+                handleLogout();
+            },
+        };
+    }, []);
+
+    const handleLogout = () => {
+        logout();
+        navigate("/login");
+    };
+
+    React.useEffect(() => {
+        const fetchUser = async () => {
+            const response = await getUserByUID(loginResponse?.uid!);
+            const data = {
+                name: response.data?.name || "",
+                email: response.data?.email || ""
+            };
+            setSession({user: data});
+        };
+        if (!session && loginResponse) fetchUser();
+    }, [session, loginResponse]);
+
     return (
         <AppProvider
             navigation={NAVIGATION}
@@ -69,16 +107,18 @@ const MainLayout: React.FC = () => {
                 logo: <></>,
                 title: "Lucid Dreams",
             }}
+            authentication={authentication}
+            session={session}
         >
             <DashboardLayout>
-                <Box 
+                <Box
                     sx={{
                         height: "100%",
                         padding: 6,
                         width: '100%'
                     }}
                 >
-                    <Outlet/>
+                    <Outlet />
                 </Box>
             </DashboardLayout>
         </AppProvider>

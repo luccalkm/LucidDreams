@@ -35,7 +35,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (uid) {
             return {
                 uid,
-                name: '', 
+                displayName: '', 
                 email: ''     
             };
         }
