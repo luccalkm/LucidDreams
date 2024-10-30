@@ -1,4 +1,3 @@
-import { Home } from "@mui/icons-material";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import LoginLayout from "./components/layouts/LoginLayout";
@@ -6,6 +5,7 @@ import MainLayout from "./components/layouts/MainLayout";
 import LoginPage from "./pages/auth/Login";
 import RegisterPage from "./pages/auth/Register";
 import { NotFound } from "./pages/statusCode/NotFound";
+import { Home } from "./pages/Home";
 
 function App() {
     return (
