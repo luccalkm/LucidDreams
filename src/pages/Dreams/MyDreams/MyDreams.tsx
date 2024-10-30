@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Grid, Typography, ButtonGroup, Button, CardMedia, Tooltip } from "@mui/material";
 import { DreamHomeCardDTO } from "../../../dtos/DreamHomeCardDTO";
-import { dreamHomeCardData } from "../../../context/seedData";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ViewCompactIcon from '@mui/icons-material/ViewCompact';
 import DarkerStyledPaper from "../../../components/common/StyledPaper";
+import { get, getDatabase, ref } from "firebase/database";
+import { useAuth } from "../../../context/AuthContext";
 
 const defaultImage = "https://via.placeholder.com/150";
 
@@ -13,6 +14,9 @@ export const MyDreams = () => {
     const [isOverflowed, setIsOverflowed] = useState(false);
     const [chooseFormatting, setChooseFormatting] = useState<number[]>([]);
     const [isSelectedLeft, setIsSelectedLeft] = useState(true);
+    const [dreamsData, setDreamsData] = useState<DreamHomeCardDTO[]>([]);
+    const { getLoggedId } = useAuth();
+    const db = getDatabase();
 
     useEffect(() => {
         if (titleRef.current) {
@@ -20,14 +24,35 @@ export const MyDreams = () => {
         }
     }, []);
 
+    useEffect(() => {
+        const fetchDreamsData = async () => {
+            const userId = getLoggedId();
+            const dreamsRef = ref(db, `dreams/${userId}`);
+            const snapshot = await get(dreamsRef);
+
+            if (snapshot.exists()) {
+                const data: DreamHomeCardDTO[] = Object.values(snapshot.val());
+                const sortedData = data
+                    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                    .slice(0, 6);
+                setDreamsData(sortedData);
+            } else {
+                console.log("Nenhum sonho encontrado para este usuário.");
+                setDreamsData([]);
+            }
+        };
+
+        fetchDreamsData();
+    }, []);
+
     const handleLeftButtonClick = () => {
         setIsSelectedLeft(true);
-        setChooseFormatting(Array(dreamHomeCardData.length).fill(3));
+        setChooseFormatting(Array(dreamsData.length).fill(3));
     };
 
     const handleRightButtonClick = () => {
         setIsSelectedLeft(false);
-        setChooseFormatting(Array(dreamHomeCardData.length).fill(6));
+        setChooseFormatting(Array(dreamsData.length).fill(6));
     };
 
     return (
@@ -53,8 +78,8 @@ export const MyDreams = () => {
                     </Button>
                 </ButtonGroup>
             </Grid>
-            {dreamHomeCardData.map((dream: DreamHomeCardDTO, index: number) => (
-                <Grid item xs={12} sm={6} md={chooseFormatting[index] || 3} key={dream.id}>
+            {dreamsData.map((dream: DreamHomeCardDTO, index: number) => (
+                <Grid item xs={12} sm={6} md={chooseFormatting[index] || 3} key={dream?.id}>
                     <DarkerStyledPaper
                         sx={{
                             padding: 2,
@@ -66,8 +91,8 @@ export const MyDreams = () => {
                         <CardMedia
                             component="img"
                             height="140"
-                            image={dream.image || defaultImage}
-                            alt={dream.title}
+                            image={dream?.image || defaultImage}
+                            alt={dream?.title}
                             sx={{ marginBottom: 2 }}
                         />
                         <Tooltip title={isOverflowed ? dream?.title : ''} disableHoverListener={!isOverflowed}>
@@ -87,10 +112,10 @@ export const MyDreams = () => {
                             </Typography>
                         </Tooltip>
                         <Typography variant="body2" color="textSecondary" paragraph>
-                            {dream.description}
+                            {dream?.description}
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
-                            Data: {new Date(dream.date).toLocaleDateString()}
+                            Data: {new Date(dream?.date).toLocaleDateString()}
                         </Typography>
                     </DarkerStyledPaper>
                 </Grid>
