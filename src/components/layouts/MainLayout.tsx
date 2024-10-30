@@ -7,97 +7,84 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import LayersIcon from '@mui/icons-material/Layers';
 import { AppProvider, NavigationItem } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-import Toolbar from '@mui/material/Toolbar';
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import { Box, Grid } from "@mui/material";
+import theme from "../../theme";
+import { AddAPhoto, CloudCircle } from "@mui/icons-material";
+import { Outlet } from "react-router-dom";
 
 const NAVIGATION: NavigationItem[] = [
-  {
-    segment: 'dashboard',
-    title: 'Dashboard',
-    icon: <DashboardIcon />,
-  },
-  {
-    segment: 'orders',
-    title: 'Orders',
-    icon: <ShoppingCartIcon />,
-  },
-  {
-    segment: 'reports',
-    title: 'Reports',
-    icon: <BarChartIcon />,
-    children: [
-      {
-        segment: 'sales',
-        title: 'Sales',
-        icon: <DescriptionIcon />,
-      },
-      {
-        segment: 'traffic',
-        title: 'Traffic',
-        icon: <DescriptionIcon />,
-      },
-    ],
-  },
-  {
-    segment: 'integrations',
-    title: 'Integrations',
-    icon: <LayersIcon />,
-  },
+    {
+        segment: 'myDreams',
+        title: 'Meus sonhos',
+        icon: <DashboardIcon />,
+    },
+    // {
+    //     segment: 'orders',
+    //     title: 'Orders',
+    //     icon: <ShoppingCartIcon />,
+    // },
+    // {
+        // segment: 'reports',
+        // title: 'Reports',
+        // icon: <BarChartIcon />,
+        // children: [
+        //     {
+        //         segment: 'sales',
+        //         title: 'Sales',
+        //         icon: <DescriptionIcon />,
+        //     },
+        //     {
+        //         segment: 'traffic',
+        //         title: 'Traffic',
+        //         icon: <DescriptionIcon />,
+        //     },
+        // ],
+    // },
+    {
+        segment: 'registerDream',
+        title: 'Registrar novo sonho',
+        icon: <LayersIcon />,
+    },
 ];
 
 const demoTheme = extendTheme({
-  colorSchemes: { light: true, dark: true },
-  colorSchemeSelector: 'class',
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 600,
-      lg: 1200,
-      xl: 1536,
+    colorSchemeSelector: "class",
+    colorSchemes: { light: true, dark: true },
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 600,
+            md: 600,
+            lg: 1200,
+            xl: 1536,
+        },
     },
-  },
 });
 
-interface MainLayoutProps {
-  window?: () => Window;
-  children?: React.ReactNode;
-}
 
-const MainLayout: React.FC<MainLayoutProps> = (props) => {
-  const { window, children } = props;
-
-  const drawer = (
-    <div>
-      <Toolbar />
-      <Divider />
-      <List>
-        {NAVIGATION.filter(item => item.segment).map((item) => (
-          <ListItem component="button" key={item.segment}>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.title} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
-
-  return (
-    <AppProvider
-      navigation={NAVIGATION}
-      theme={demoTheme}
-    >
-      <DashboardLayout>
-        {children}
-      </DashboardLayout>
-    </AppProvider>
-  );
+const MainLayout: React.FC = () => {
+    return (
+        <AppProvider
+            navigation={NAVIGATION}
+            theme={demoTheme}
+            branding={{
+                logo: <></>,
+                title: "Lucid Dreams",
+            }}
+        >
+            <DashboardLayout>
+                <Box 
+                    display={'flex'}
+                    sx={{
+                        height: "100%",
+                        padding: 6
+                    }}
+                >
+                    <Outlet/>
+                </Box>
+            </DashboardLayout>
+        </AppProvider>
+    );
 };
 
 export default MainLayout;
