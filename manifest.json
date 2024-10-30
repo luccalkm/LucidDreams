@@ -4,49 +4,44 @@
     "categories": [
         "social"
     ],
-    "start_url": "/",
-    "scope": ".",
+    "start_url": "https://astroligo.com/",
+    "scope": "/",
     "description": "Um aplicativo para registrar e interpretar seus sonhos.",
     "shortcuts": [],
     "icons": [
         {
-            "src": "./src/assets/512.png",
+            "src": "/assets/web-app-manifest-512x512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "./src/assets/android-icon-192x192.png",
+            "src": "/assets/web-app-manifest-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "./src/assets/android-icon-144x144.png",
-            "sizes": "144x144",
-            "type": "image/png"
-        },
-        {
-            "src": "./src/assets/android-icon-96x96.png",
+            "src": "/assets/favicon-96x96.png",
             "sizes": "96x96",
             "type": "image/png"
         },
         {
-            "src": "./src/assets/android-icon-72x72.png",
+            "src": "/assets/favicon-72x72.png",
             "sizes": "72x72",
             "type": "image/png"
         },
         {
-            "src": "./src/assets/android-icon-48x48.png",
+            "src": "/assets/favicon-48x48.png",
             "sizes": "48x48",
             "type": "image/png"
         },
         {
-            "src": "./src/assets/favicon-32x32.png",
+            "src": "/assets/favicon-32x32.png",
             "sizes": "32x32",
             "type": "image/png"
         },
         {
-            "src": "./src/assets/favicon-16x16.png",
+            "src": "/assets/favicon-16x16.png",
             "sizes": "16x16",
             "type": "image/png"
         }
@@ -54,7 +49,7 @@
     "orientation": "portrait-primary",
     "screenshots": [
         {
-            "src": "./src/assets/512.png",
+            "src": "/assets/web-app-manifest-512x512.png",
             "sizes": "512x512",
             "type": "image/png",
             "platform": "wide",
