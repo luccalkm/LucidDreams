@@ -38,7 +38,6 @@ export const MyDreams = () => {
                 setDreamsData(sortedData);
                 console.log(sortedData)
             } else {
-                console.log("Nenhum sonho encontrado para este usuário.");
                 setDreamsData([]);
             }
         };
@@ -89,12 +88,11 @@ export const MyDreams = () => {
                             flexDirection: 'column',
                         }}
                     >
-                        <CardMedia
-                            component="img"
+                        <img
                             height="140"
-                            image={dream?.image || defaultImage}
+                            src={dream?.imageBase64 || defaultImage}
                             alt={dream?.title}
-                            sx={{ marginBottom: 2 }}
+                            style={{ marginBottom: 2 }}
                         />
                         <Tooltip title={isOverflowed ? dream?.title : ''} disableHoverListener={!isOverflowed}>
                             <Typography

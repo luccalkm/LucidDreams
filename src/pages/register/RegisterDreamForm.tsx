@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, TextField, Box, IconButton, InputAdornment } from "@mui/material";
+import { Grid, TextField, Box, IconButton, InputAdornment, CircularProgress } from "@mui/material";
 import { Send as SendIcon } from '@mui/icons-material';
 import DarkerStyledPaper from "../../components/common/StyledPaper";
 import { DreamRegisterDTO } from "../../dtos/DreamDTOs";
@@ -21,6 +21,7 @@ export const RegisterDreamForm = () => {
     const db = getDatabase();
     const navigate = useNavigate();
     const { showSnackbar } = useSnackbar();
+    const [isLoading, setIsLoading] = useState(false);
 
     const [error, setError] = useState<string | null>(null);
     const isFormValid = formData.title.trim() !== "" && formData.description.trim() !== "" && formData.date.trim() !== "";
@@ -34,7 +35,8 @@ export const RegisterDreamForm = () => {
     };
     const handleSubmit = async () => {
         if (!isFormValid) return;
-    debugger;
+        setIsLoading(true);
+
         let base64 = "";
     
         try {
@@ -57,6 +59,8 @@ export const RegisterDreamForm = () => {
             navigate("/my/dream");
         } catch (error) {
             showSnackbar("Ocorreu um erro ao criar seu sonho... Tente novamente mais tarde!", "error");
+        } finally {
+            setIsLoading(false);
         }
     };
     
@@ -66,6 +70,7 @@ export const RegisterDreamForm = () => {
             <Grid container spacing={2} justifyContent="space-between">
                 <Grid item xs={10}>
                     <TextField
+                        disabled={isLoading}
                         fullWidth
                         label="Título"
                         name="title"
@@ -78,6 +83,7 @@ export const RegisterDreamForm = () => {
                 </Grid>
                 <Grid item xs={2}>
                     <TextField
+                        disabled={isLoading}
                         fullWidth
                         name="date"
                         type="date"
@@ -94,6 +100,7 @@ export const RegisterDreamForm = () => {
                 <Grid item xs={12}>
                     <Box sx={{ position: 'relative', width: '100%' }}>
                         <TextField
+                            disabled={isLoading}
                             fullWidth
                             label="Descrição"
                             name="description"
@@ -107,7 +114,7 @@ export const RegisterDreamForm = () => {
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton onClick={handleSubmit} disabled={!isFormValid || loading}>
-                                            <SendIcon />
+                                            {isLoading ? <CircularProgress /> : <SendIcon />}
                                         </IconButton>
                                     </InputAdornment>
                                 )

@@ -3,5 +3,5 @@ export interface DreamHomeCardDTO {
     title: string;
     description: string;
     date: string;
-    image?: string;
+    imageBase64?: string;
 }
