@@ -5,7 +5,7 @@ import MainLayout from "./components/layouts/MainLayout";
 import LoginPage from "./pages/auth/Login";
 import RegisterPage from "./pages/auth/Register";
 import { NotFound } from "./pages/statusCode/NotFound";
-import { Home } from "./pages/Home";
+import { Home } from "./pages/home/Home";
 
 function App() {
     return (

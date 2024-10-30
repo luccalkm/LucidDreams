@@ -74,10 +74,10 @@ const MainLayout: React.FC = () => {
         >
             <DashboardLayout>
                 <Box 
-                    display={'flex'}
                     sx={{
                         height: "100%",
-                        padding: 6
+                        padding: 6,
+                        width: '100%'
                     }}
                 >
                     <Outlet/>
