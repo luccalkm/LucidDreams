@@ -1,21 +1,24 @@
 import React, { useState } from "react";
-import { Grid, TextField, Typography, Box, IconButton, InputAdornment, useTheme } from "@mui/material";
-import { DreamRegisterDTO } from "../../dtos/DreamDTOs";
-import DarkerStyledPaper from "../../components/common/StyledPaper";
+import { Grid, TextField, Box, IconButton, InputAdornment } from "@mui/material";
 import { Send as SendIcon } from '@mui/icons-material';
-import theme from "../../theme";
+import DarkerStyledPaper from "../../components/common/StyledPaper";
+import { DreamRegisterDTO } from "../../dtos/DreamDTOs";
+import { useAI } from "../../context/AIContext";
+import { getDatabase, ref, set } from "firebase/database";
+import { useAuth } from "../../context/AuthContext";
 
 export const RegisterDreamForm = () => {
-    const theme = useTheme();
-    const isDarkMode = theme.palette.mode === 'dark';
-
+    const { generateImageBase64, collectDreamDataPrompt, getTextResponse, loading } = useAI();
+    const {  getLoggedId } = useAuth();
     const [formData, setFormData] = useState<DreamRegisterDTO>({
         title: "",
         description: "",
         date: ""
     });
+    const db = getDatabase();
 
-    const usedInputBackground = isDarkMode ? theme.palette.grey[800] : 'initial';
+    const [error, setError] = useState<string | null>(null);
+    const isFormValid = formData.title.trim() !== "" && formData.description.trim() !== "" && formData.date.trim() !== "";
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -25,70 +28,85 @@ export const RegisterDreamForm = () => {
         });
     };
 
-    const handleSubmit = () => {
-        console.log("Form data:", formData);
+    const handleSubmit = async () => {
+        if (!isFormValid) return;
+
+        try {
+            const newDreamRef = ref(db, `dreams/${getLoggedId()}/${crypto.randomUUID()}`);
+            await set(newDreamRef, {
+                title: formData.title,
+                description: formData.description,
+                date: formData.date,
+                imageBase64: "",
+            });
+            console.log("Sonho registrado com sucesso!");
+        } catch (error) {
+            console.error("Erro ao registrar o sonho: ", error);
+            setError("Falha ao salvar os dados.");
+        }
     };
 
     return (
         <DarkerStyledPaper sx={{ padding: 3 }}>
-            {/* <Typography variant="h4" gutterBottom>
-                Registrar Novo Sonho
-            </Typography> */}
-            {/* <Grid item xs={12} margin={'auto'}> */}
-                <Grid container spacing={2} justifyContent="space-between">
-                    <Grid item xs={10}>
-                        <TextField
-                            fullWidth
-                            label="Título"
-                            name="title"
-                            variant="standard"
-                            value={formData.title}
-                            onChange={handleInputChange}
-                            required
-                            sx={{ height: '56px' }}
-                            />
-                    </Grid>
-                    <Grid item xs={2}>
-                        <TextField
-                            fullWidth
-                            name="date"
-                            type="date"
-                            value={formData.date}
-                            onChange={handleInputChange}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            required
-                            sx={{ height: '56px' }}
-                        />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <Box sx={{ position: 'relative', width: '100%' }}>
-                            <TextField
-                                fullWidth
-                                label="Descrição"
-                                name="description"
-                                value={formData.description}
-                                onChange={handleInputChange}
-                                multiline
-                                maxRows={6}
-                                required
-                                sx={{ backgroundColor: usedInputBackground }}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton onClick={handleSubmit}>
-                                                <SendIcon />
-                                            </IconButton>
-                                        </InputAdornment>
-                                    )
-                                }}
-                            />
-                        </Box>
-                    </Grid>
+            <Grid container spacing={2} justifyContent="space-between">
+                <Grid item xs={10}>
+                    <TextField
+                        fullWidth
+                        label="Título"
+                        name="title"
+                        variant="standard"
+                        value={formData.title}
+                        onChange={handleInputChange}
+                        required
+                        sx={{ height: '56px' }}
+                    />
                 </Grid>
-            {/* </Grid> */}
+                <Grid item xs={2}>
+                    <TextField
+                        fullWidth
+                        name="date"
+                        type="date"
+                        value={formData.date}
+                        onChange={handleInputChange}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        required
+                        sx={{ height: '56px' }}
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <Box sx={{ position: 'relative', width: '100%' }}>
+                        <TextField
+                            fullWidth
+                            label="Descrição"
+                            name="description"
+                            value={formData.description}
+                            onChange={handleInputChange}
+                            multiline
+                            maxRows={6}
+                            required
+                            sx={{ backgroundColor: 'initial' }}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton onClick={handleSubmit} disabled={!isFormValid || loading}>
+                                            <SendIcon />
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                    </Box>
+                </Grid>
+
+                {error && (
+                    <Grid item xs={12}>
+                        <p style={{ color: 'red' }}>{error}</p>
+                    </Grid>
+                )}
+            </Grid>
         </DarkerStyledPaper>
     );
 };
