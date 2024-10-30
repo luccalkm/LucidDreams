@@ -8,6 +8,9 @@ import {
 import { auth, googleProvider, database } from "../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { ref, set } from "firebase/database";
+import { UserDTO, UserRegisterDTO } from "../dtos/UserDTOs";
+import { createResponse, ResponseDTO } from "../dtos/ResponseDTOs";
+import { mapUserToDTO } from "../utils/mappers";
 
 export const loginUser = async (email: string, password: string): Promise<User | undefined> => {
     try {
@@ -18,25 +21,22 @@ export const loginUser = async (email: string, password: string): Promise<User |
     }
 };
 
-export const registerUser = async (
-    email: string,
-    password: string,
-    name: string,
-    dateOfBirth: string
-): Promise<User | undefined> => {
+export const registerUser = async (newUser : UserRegisterDTO): Promise<ResponseDTO<UserDTO | null>> => {
     try {
-        const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, newUser.email, newUser.password);
         const user: User = userCredential.user;
-        const uid: string = user.uid;
-        
-        await saveUserData(uid, name, email, dateOfBirth);
+
+        await saveUserData(user.uid, newUser.name, newUser.email, newUser.dateOfBirth);
 
         await sendEmailVerification(user);
-        console.log("E-mail de verificação enviado para:", email);
 
-        return user;
+        console.log("E-mail de verificação enviado para:", newUser.email);
+
+        const userDTO = mapUserToDTO(user);
+
+        return createResponse(true, userDTO, "Registro realizado com sucesso.");
     } catch (error) {
-        console.error("Erro ao registrar usuário:", error);
+        return createResponse(false, null, "Erro ao cadastrar.");
     }
 };
 

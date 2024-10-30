@@ -6,22 +6,24 @@ import LoginPage from "./pages/auth/Login";
 import RegisterPage from "./pages/auth/Register";
 import { NotFound } from "./pages/statusCode/NotFound";
 import { Home } from "./pages/home/Home";
+import { SnackbarProvider } from "./context/SnackbarContext";
 
 function App() {
     return (
         <>
-            <ToastContainer position="bottom-right" theme="colored" />
             <BrowserRouter>
-                <Routes>
-                    <Route element={<LoginLayout />}>
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
-                    </Route>
-                    <Route element={<MainLayout />}>
-                        <Route path="/" element={<Home />} />
-                    </Route>
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
+                <SnackbarProvider>
+                    <Routes>
+                        <Route element={<LoginLayout />}>
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route path="/register" element={<RegisterPage />} />
+                        </Route>
+                        <Route element={<MainLayout />}>
+                            <Route path="/" element={<Home />} />
+                        </Route>
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </SnackbarProvider>
             </BrowserRouter>
         </>
     );
