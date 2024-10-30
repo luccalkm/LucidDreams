@@ -2,7 +2,6 @@ export interface DreamRegisterDTO {
     title: string;
     description: string;
     date: string;
-    image?: string;
 }
 
 export interface DreamDTO {
@@ -11,4 +10,5 @@ export interface DreamDTO {
     description: string;
     date: string;
     userId: string;
+    image?: string;
 }

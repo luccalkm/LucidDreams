@@ -20,6 +20,8 @@ function App() {
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/register" element={<RegisterPage />} />
                         </Route>
+
+
                         <Route element={<MainLayout />}>
                             <Route path="/" element={<Home />} />
                             <Route path="/my/dream" element={<MyDreams />} />
