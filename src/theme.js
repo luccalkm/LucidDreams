@@ -1,10 +1,12 @@
-import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes, Theme } from '@mui/material/styles';
 import { red, green, amber, blue as muiBlue } from '@mui/material/colors';
 
-const primaryColor = '#8f69ff';
-const secondaryColor = '#FF6B6B';
+// Definir as cores primária e secundária
+const primaryColor: string = '#8f69ff';
+const secondaryColor: string = '#FF6B6B';
 
-let theme = createTheme({
+// Criar o tema com tipagem adequada
+let theme: Theme = createTheme({
     palette: {
         primary: {
             main: primaryColor,
@@ -115,24 +117,24 @@ let theme = createTheme({
     },
     components: {
         MuiButton: {
-          styleOverrides: {
-            containedPrimary: {
-              backgroundColor: primaryColor,
-              color: '#FFFFFF',
-              '&:hover': {
-                backgroundColor: '#7A55E6',
-              },
+            styleOverrides: {
+                containedPrimary: {
+                    backgroundColor: primaryColor,
+                    color: '#FFFFFF',
+                    '&:hover': {
+                        backgroundColor: '#7A55E6',
+                    },
+                },
+                containedSecondary: {
+                    backgroundColor: secondaryColor,
+                    color: '#FFFFFF',
+                    '&:hover': {
+                        backgroundColor: '#FF5656',
+                    },
+                },
             },
-            containedSecondary: {
-              backgroundColor: secondaryColor,
-              color: '#FFFFFF',
-              '&:hover': {
-                backgroundColor: '#FF5656',
-              },
-            },
-          },
         },
-      },
+    },
 });
 
 theme = responsiveFontSizes(theme);
