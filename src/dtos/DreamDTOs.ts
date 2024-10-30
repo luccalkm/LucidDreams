@@ -1,14 +1,13 @@
-
 export interface DreamRegisterDTO {
-    titulo: string;
-    descricao: string;
-    dataSonho: string; // Data do sonho, no formato 'YYYY-MM-DD'
+    title: string;
+    description: string;
+    date: string;
 }
 
 export interface DreamDTO {
     id: string;
-    titulo: string;
-    descricao: string;
-    dataSonho: string;
-    usuarioId: string;
+    title: string;
+    description: string;
+    date: string;
+    userId: string;
 }

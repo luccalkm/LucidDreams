@@ -10,10 +10,10 @@ import GoogleIcon from "@mui/icons-material/Google";
 
 const RegisterPage = () => {
   const [registerForm, setRegisterForm] = useState({
-    nome: "",
+    name: "",
     email: "",
-    senha: "",
-    dataNascimento: "",
+    password: "",
+    dateOfBirth: "",
   });
 
   const theme = useTheme();
@@ -22,8 +22,8 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { email, senha, nome, dataNascimento } = registerForm;
-       await registerUser(email, senha, nome, dataNascimento);
+      const { email, password, name, dateOfBirth } = registerForm;
+       await registerUser(email, password, name, dateOfBirth);
     } catch (error) {
       console.error("Erro ao fazer cadastro:", error);
     } finally {
@@ -86,7 +86,7 @@ const RegisterPage = () => {
               name="nome"
               label="Nome"
               type="text"
-              value={registerForm.nome}
+              value={registerForm.name}
               onChange={handleChange}
               sx={{
                 backgroundColor: theme.palette.background.paper,
@@ -123,7 +123,7 @@ const RegisterPage = () => {
                 name="senha"
                 label="Senha"
                 type="password"
-                value={registerForm.senha}
+                value={registerForm.password}
                 onChange={handleChange}
                 sx={{
                   backgroundColor: theme.palette.background.paper,
@@ -140,7 +140,7 @@ const RegisterPage = () => {
                 name="dataNascimento"
                 label="Data de Nascimento"
                 type="text"
-                value={registerForm.dataNascimento}
+                value={registerForm.dateOfBirth}
                 onChange={handleChange}
                 sx={{
                   backgroundColor: theme.palette.background.paper,
