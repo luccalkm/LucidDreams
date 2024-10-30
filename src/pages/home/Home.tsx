@@ -1,9 +1,9 @@
-import { Divider, Grid, Typography } from '@mui/material';
+import { Divider, Grid, Typography, useTheme } from '@mui/material';
 import DreamsHomeCard from "./DreamsHomeCard";
 import { DreamHomeCardDTO } from "../../dtos/DreamHomeCardDTO";
 import { dreamHomeCardData } from "../../context/seedData"
 
-export const Home = () => {
+export const Home = () => {    
     const sortedData = dreamHomeCardData
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
         .slice(0, 6);

@@ -64,7 +64,6 @@ export const saveUserData = async (
     dateOfBirth: string | null
 ): Promise<void> => {
     try {
-        console.log("uid",uid)
         await set(ref(database, `users/${uid}`), {
             nome: name,
             email: email,
