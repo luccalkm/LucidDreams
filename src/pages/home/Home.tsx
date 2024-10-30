@@ -1,5 +1,6 @@
-import { Grid, Typography } from '@mui/material';
+import { CssBaseline, GlobalStyles, Grid, ThemeProvider, Typography } from '@mui/material';
 import DreamsHomeCard from "./DreamsHomeCard";
+import theme from "../../theme";
 
 export const Home = () => {
     return (
