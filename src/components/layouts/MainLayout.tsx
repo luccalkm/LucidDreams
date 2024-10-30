@@ -1,23 +1,25 @@
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import * as React from 'react';
 import { extendTheme } from '@mui/material/styles';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import DescriptionIcon from '@mui/icons-material/Description';
 import LayersIcon from '@mui/icons-material/Layers';
 import { AppProvider, NavigationItem } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-import { Box, Grid } from "@mui/material";
-import theme from "../../theme";
-import { AddAPhoto, CloudCircle } from "@mui/icons-material";
+import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
+import { MyDreams } from "../../pages/Dreams/MyDreams/MyDreams";
 
 const NAVIGATION: NavigationItem[] = [
     {
-        segment: 'myDreams',
+        segment: 'my/dream',
         title: 'Meus sonhos',
-        icon: <DashboardIcon />,
+        icon: <AutoAwesomeIcon />,
     },
+    {
+        segment: 'register/dream',
+        title: 'Registrar novo sonho',
+        icon: <LayersIcon />,
+    },
+    /*
     // {
     //     segment: 'orders',
     //     title: 'Orders',
@@ -40,11 +42,7 @@ const NAVIGATION: NavigationItem[] = [
         //     },
         // ],
     // },
-    {
-        segment: 'registerDream',
-        title: 'Registrar novo sonho',
-        icon: <LayersIcon />,
-    },
+    */
 ];
 
 const demoTheme = extendTheme({
