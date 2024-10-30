@@ -6,6 +6,7 @@
     ],
     "start_url": "/",
     "scope": ".",
+    "description": "Um aplicativo para registrar e interpretar seus sonhos.",
     "shortcuts": [],
     "icons": [
         {
