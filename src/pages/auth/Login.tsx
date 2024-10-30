@@ -46,7 +46,6 @@ const LoginPage = () => {
         }
 
         try {
-            console.log(loginForm)
             const response = await loginUser(loginForm);
             if (!response.success)
                 throw new Error(response?.message);
@@ -146,7 +145,7 @@ const LoginPage = () => {
                             />
                         </Grid2>
                     </Grid2>
-                    <Grid2 container justifyContent="flex-end">
+                    {/* <Grid2 container justifyContent="flex-end">
                         <Grid2>
                             <Link
                                 href="#"
@@ -161,7 +160,7 @@ const LoginPage = () => {
                                 Esqueceu a senha?
                             </Link>
                         </Grid2>
-                    </Grid2>
+                    </Grid2> */}
                     <Grid2 size={12}>
                         <Button
                             variant='contained'
@@ -187,7 +186,7 @@ const LoginPage = () => {
                             </Link>
                         </Grid2>
                     </Grid2>
-                    <Grid2 container justifyContent="center" sx={{ mt: theme.spacing(2) }}>
+                    {/* <Grid2 container justifyContent="center" sx={{ mt: theme.spacing(2) }}>
                         <Grid2>
                             <Button
                                 color="primary"
@@ -202,7 +201,7 @@ const LoginPage = () => {
                                 Login com Google
                             </Button>
                         </Grid2>
-                    </Grid2>
+                    </Grid2> */}
                 </Box>
             </Grid2>
         </Grid2>

@@ -208,7 +208,7 @@ const RegisterPage = () => {
                             </Link>
                         </Grid2>
                     </Grid2>
-                    <Grid2
+                    {/* <Grid2
                         container
                         justifyContent="center"
                         sx={{ mt: theme.spacing(2) }}
@@ -226,7 +226,7 @@ const RegisterPage = () => {
                                 Login com Google
                             </Button>
                         </Grid2>
-                    </Grid2>
+                    </Grid2> */}
                 </Box>
             </Grid2>
         </Grid2>

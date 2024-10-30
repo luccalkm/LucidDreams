@@ -4,7 +4,6 @@ import {
     sendEmailVerification,
     User,
     UserCredential,
-    fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import { auth, googleProvider, database } from "../config/firebase";
 import { signInWithPopup } from "firebase/auth";
@@ -15,10 +14,6 @@ import { mapUserToDTO } from "../utils/mappers";
 
 export const loginUser = async (credential: UserLoginDTO): Promise<ResponseDTO<UserResponseLoginDTO | null>> => {
     try {
-        // const signInMethods = await fetchSignInMethodsForEmail(auth, credential.email);
-        // if (signInMethods.length === 0) 
-        //     return createResponse(false, null, "Usuário não encontrado.");
-
         const userCredential: UserCredential = await signInWithEmailAndPassword(auth, credential.email, credential.password);
         const userResponseDTO: UserResponseLoginDTO = {
             uid: userCredential.user.uid,
@@ -26,7 +21,10 @@ export const loginUser = async (credential: UserLoginDTO): Promise<ResponseDTO<U
         };
         
         return createResponse(true, userResponseDTO, "Login realizado com sucesso.");
-    } catch (error) {
+    } catch (error:any) {
+        if (error.code === 'auth/invalid-credential')
+            return createResponse(false, null, "Credenciais inválidas.");
+
         return createResponse(false, null, "Falha ao realizar login.");
     }
 };
@@ -61,11 +59,10 @@ export const signInWithGoogle = async (): Promise<User | undefined> => {
         const result = await signInWithPopup(auth, googleProvider);
         const user: User = result.user;
 
-        if (!user.emailVerified) {
+        if (!user.emailVerified)
             await sendEmailVerification(user);
-        }
 
-        await saveUserData(user.uid, user.displayName || "", user.email || "", null);
+        // await saveUserData(user.uid);
 
         return user;
     } catch (error) {
