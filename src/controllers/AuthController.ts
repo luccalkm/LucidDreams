@@ -20,16 +20,16 @@ export const loginUser = async (email: string, password: string): Promise<User |
 
 export const registerUser = async (
     email: string,
-    senha: string,
-    nome: string,
-    dataNascimento: string
+    password: string,
+    name: string,
+    dateOfBirth: string
 ): Promise<User | undefined> => {
     try {
-        const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, senha);
+        const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user: User = userCredential.user;
         const uid: string = user.uid;
         
-        await saveUserData(uid, nome, email, dataNascimento);
+        await saveUserData(uid, name, email, dateOfBirth);
 
         await sendEmailVerification(user);
         console.log("E-mail de verificação enviado para:", email);
@@ -59,15 +59,15 @@ export const signInWithGoogle = async (): Promise<User | undefined> => {
 
 export const saveUserData = async (
     uid: string,
-    nome: string,
+    name: string,
     email: string,
-    dataNascimento: string | null
+    dateOfBirth: string | null
 ): Promise<void> => {
     try {
-        await set(ref(database, `usuarios/${uid}`), {
-            nome: nome,
+        await set(ref(database, `users/${uid}`), {
+            nome: name,
             email: email,
-            dataNascimento: dataNascimento,
+            dateOfBirth: dateOfBirth,
         });
     } catch (error) {
         console.error("Erro ao salvar dados:", error);

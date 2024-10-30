@@ -1,15 +1,14 @@
-
 export interface UserRegisterDTO {
-    nome: string;
+    name: string;
     email: string;
-    senha: string;
-    dataNascimento: string;
+    password: string;
+    dateOfBirth: string;
 }
 
 export interface UserDTO {
     uid: string;
-    nome: string;
+    name: string;
     email: string;
-    dataNascimento: string | null;
-    emailVerificado: boolean;
+    dateOfBirth: string | null;
+    emailVerified: boolean;
 }

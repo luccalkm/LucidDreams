@@ -4,22 +4,22 @@ import { DreamDTO } from "../dtos/DreamDTOs";
 
 export const mapUserToDTO = (user: User): UserDTO => ({
     uid: user.uid,
-    nome: user.displayName || "",
+    name: user.displayName || "",
     email: user.email || "",
-    dataNascimento: null,
-    emailVerificado: user.emailVerified,
+    dateOfBirth: null,
+    emailVerified: user.emailVerified,
 });
 
 export const mapDreamToDTO = (
     id: string,
-    titulo: string,
-    descricao: string,
-    dataSonho: string,
-    usuarioId: string
+    title: string,
+    description: string,
+    date: string,
+    userId: string
 ): DreamDTO => ({
     id,
-    titulo,
-    descricao,
-    dataSonho,
-    usuarioId,
+    title,
+    description,
+    date,
+    userId,
 });
