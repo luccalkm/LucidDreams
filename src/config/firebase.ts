@@ -12,9 +12,10 @@ interface FirebaseConfig {
     measurementId: string;
 }
 
-const firebaseConfig: FirebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyCi_J5lv7utn-AwGj-LJ-stOljmu629LjQ",
     authDomain: "lucid-dreams-firebase.firebaseapp.com",
+    databaseURL: "https://lucid-dreams-firebase-default-rtdb.firebaseio.com",
     projectId: "lucid-dreams-firebase",
     storageBucket: "lucid-dreams-firebase.appspot.com",
     messagingSenderId: "779868598540",
