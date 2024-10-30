@@ -1,17 +1,17 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
 import { loginUser, registerUser, signInWithGoogle } from "../../controllers/AuthController";
 import {
     Link,
     Typography,
     TextField,
     Box,
-    Grid,
+    Grid2,
     Button,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import GoogleIcon from '@mui/icons-material/Google';
 
-const LoginPage: React.FC = () => {
+const LoginPage = () => {
     const [loginForm, setLoginForm] = useState({
         email: '',
         password: ''
@@ -19,7 +19,7 @@ const LoginPage: React.FC = () => {
     const theme = useTheme();
     const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const { email, password } = loginForm;
         setLoading(true);
@@ -32,8 +32,9 @@ const LoginPage: React.FC = () => {
         }
     };
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
+
         setLoginForm((prev) => ({
             ...prev,
             [name]: value
@@ -52,8 +53,8 @@ const LoginPage: React.FC = () => {
     };
 
     return (
-        <Grid container direction="column" alignItems="center" sx={{ mt: theme.spacing(5) }}>
-            <Grid item>
+        <Grid2 container direction="column" alignItems="center" sx={{ mt: theme.spacing(5) }}>
+            <Grid2>
                 <Typography
                     component="h1"
                     variant="h5"
@@ -62,8 +63,8 @@ const LoginPage: React.FC = () => {
                 >
                     Faça login em sua conta
                 </Typography>
-            </Grid>
-            <Grid item sx={{ width: '100%' }}>
+            </Grid2>
+            <Grid2 sx={{ width: '100%' }}>
                 <Box
                     component="form"
                     noValidate
@@ -71,10 +72,9 @@ const LoginPage: React.FC = () => {
                         mt: theme.spacing(1),
                         width: '100%',
                     }}
-                    onSubmit={handleSubmit}
                 >
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
+                    <Grid2 container spacing={2}>
+                        <Grid2 size={12}>
                             <TextField
                                 variant="outlined"
                                 margin="normal"
@@ -92,8 +92,8 @@ const LoginPage: React.FC = () => {
                                     borderRadius: theme.shape.borderRadius,
                                 }}
                             />
-                        </Grid>
-                        <Grid item xs={12}>
+                        </Grid2>
+                        <Grid2 size={12}>
                             <TextField
                                 variant="outlined"
                                 margin="normal"
@@ -109,10 +109,10 @@ const LoginPage: React.FC = () => {
                                     borderRadius: theme.shape.borderRadius,
                                 }}
                             />
-                        </Grid>
-                    </Grid>
-                    <Grid container justifyContent="flex-end">
-                        <Grid item>
+                        </Grid2>
+                    </Grid2>
+                    <Grid2 container justifyContent="flex-end">
+                        <Grid2>
                             <Link
                                 href="#"
                                 variant="body2"
@@ -125,13 +125,13 @@ const LoginPage: React.FC = () => {
                             >
                                 Esqueceu a senha?
                             </Link>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
+                        </Grid2>
+                    </Grid2>
+                    <Grid2 size={12}>
                         <Button
                             variant='contained'
                             disabled={loading}
-                            type="submit"
+                            onClick={handleSubmit}
                             fullWidth
                             sx={{
                                 my: theme.spacing(3)
@@ -139,9 +139,9 @@ const LoginPage: React.FC = () => {
                         >
                             {loading ? "Carregando..." : "Entrar"}
                         </Button>
-                    </Grid>
-                    <Grid container justifyContent="center">
-                        <Grid item>
+                    </Grid2>
+                    <Grid2 container justifyContent="center">
+                        <Grid2>
                             <Link
                                 href="/register"
                                 variant="button"
@@ -150,10 +150,10 @@ const LoginPage: React.FC = () => {
                             >
                                 Criar conta
                             </Link>
-                        </Grid>
-                    </Grid>
-                    <Grid container justifyContent="center" sx={{ mt: theme.spacing(2) }}>
-                        <Grid item>
+                        </Grid2>
+                    </Grid2>
+                    <Grid2 container justifyContent="center" sx={{ mt: theme.spacing(2) }}>
+                        <Grid2>
                             <Button
                                 color="secondary"
                                 variant='contained'
@@ -166,11 +166,11 @@ const LoginPage: React.FC = () => {
                             >
                                 Login com Google
                             </Button>
-                        </Grid>
-                    </Grid>
+                        </Grid2>
+                    </Grid2>
                 </Box>
-            </Grid>
-        </Grid>
+            </Grid2>
+        </Grid2>
     );
 };
 

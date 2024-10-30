@@ -1,21 +1,28 @@
-import { Routes, Route } from "react-router-dom";
+import { Home } from "@mui/icons-material";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import LoginLayout from "./components/layouts/LoginLayout";
+import MainLayout from "./components/layouts/MainLayout";
+import LoginPage from "./pages/auth/Login";
+import RegisterPage from "./pages/auth/Register";
+import { NotFound } from "./pages/statusCode/NotFound";
 
 function App() {
-
     return (
         <>
             <ToastContainer position="bottom-right" theme="colored" />
-            <Routes>
-                <Route element={<LoginLayout />}>
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
-                </Route>
-                <Route element={<MainLayout />}>
-                    <Route path="/" element={<Home />} />
-                </Route>
-                <Route path="*" element={<NotFound />} />
-            </Routes>
+            <BrowserRouter>
+                <Routes>
+                    <Route element={<LoginLayout />}>
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/register" element={<RegisterPage />} />
+                    </Route>
+                    <Route element={<MainLayout />}>
+                        <Route path="/" element={<Home />} />
+                    </Route>
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </BrowserRouter>
         </>
     );
 }

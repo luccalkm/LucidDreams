@@ -1,6 +1,7 @@
 import { Typography, Box, Link, Paper, Grid2, Grid } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import theme from '../../theme';
+// import { useAuth } from '../../context/AuthContext';
 
 const Copyright = () => {
     return (
@@ -17,8 +18,33 @@ const Copyright = () => {
     );
 };
 
+const FormLogo = () => {
+    return (
+        
+        <Grid
+            item
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mb={theme.spacing(3)}
+        >
+        <Box
+            component="img"
+            src="/7f3f20b58ae010ac38b20ff44ab03ae7.png"
+            alt="Imagem de Login"
+            width={'50%'}
+        />
+    </Grid>
+    )
+}
 
-const LoginLayout = () => {    
+const LoginLayout = () => {
+    // const { isLoggedIn } = useAuth();
+
+    // if (isLoggedIn()) {
+    //     return <Navigate to={"/"} replace />
+    // }
+    
     return (
         <Box
             display="flex"
