@@ -15,39 +15,39 @@
             "purpose": "any"
         },
         {
-            "src": "./public/assets/19",
+            "src": "./public/assets/android-icon-192x192.png",
             "sizes": "192x192",
-            "type": "image/jpeg"
+            "type": "image/png"
         },
         {
-            "src": "",
+            "src": "./public/assets/android-icon-144x144.png",
             "sizes": "144x144",
-            "type": "image/jpeg"
+            "type": "image/png"
         },
         {
-            "src": "",
+            "src": "./public/assets/android-icon-96x96.png",
             "sizes": "96x96",
-            "type": "image/jpeg"
+            "type": "image/png"
         },
         {
-            "src": "https://cdn.glitch.global/6db14119-43b6-433c-a071-924b6c869839/144-144.jpeg?v=1649263127255",
+            "src": "./public/assets/android-icon-72x72.png",
             "sizes": "72x72",
-            "type": "image/jpeg"
+            "type": "image/png"
         },
         {
-            "src": "https://cdn.glitch.global/6db14119-43b6-433c-a071-924b6c869839/144-144.jpeg?v=1649263127255",
+            "src": "./public/assets/android-icon-48x48.png",
             "sizes": "48x48",
-            "type": "image/jpeg"
+            "type": "image/png"
         },
         {
-            "src": "https://cdn.glitch.global/6db14119-43b6-433c-a071-924b6c869839/144-144.jpeg?v=1649263127255",
+            "src": "./public/assets/favicon-32x32.png",
             "sizes": "32x32",
-            "type": "image/jpeg"
+            "type": "image/png"
         },
         {
-            "src": "https://cdn.glitch.global/6db14119-43b6-433c-a071-924b6c869839/144-144.jpeg?v=1649263127255",
+            "src": "./public/assets/favicon-16x16.png",
             "sizes": "16x16",
-            "type": "image/jpeg"
+            "type": "image/png"
         }
     ],
     "orientation": "portrait-primary",
