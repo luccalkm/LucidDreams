@@ -9,6 +9,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { UserRegisterDTO } from "../../dtos/UserDTOs";
 import { useSnackbar } from "../../context/SnackbarContext";
 import { validateDateOfBirth, validateEmail } from "../../utils/validationsUtils";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
     const [registerForm, setRegisterForm] = useState<UserRegisterDTO>({
@@ -21,7 +22,8 @@ const RegisterPage = () => {
     const theme = useTheme();
     const [loading, setLoading] = useState(false);
     const { showSnackbar } = useSnackbar();
-
+    const navigate = useNavigate();
+    
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         setLoading(true);
@@ -37,6 +39,9 @@ const RegisterPage = () => {
         if (errorMessage === "" && !validateDateOfBirth(registerForm.dateOfBirth)) 
             errorMessage = "A data de nascimento deve ser uma data válida.";
     
+        if (errorMessage === "" && registerForm.password.length < 6) 
+            errorMessage = "A senha deve ter no mínimo 6 caracteres.";
+
         if (errorMessage) {
             showSnackbar(errorMessage, "error");
             setLoading(false);
@@ -47,6 +52,12 @@ const RegisterPage = () => {
             const response = await registerUser(registerForm);
             if (!response.success)
                 throw new Error(response?.message?.toString());
+
+            showSnackbar("Cadastro realizado com sucesso!", "success");
+
+            setTimeout(() => {
+                navigate('/login');
+            }, 1500)
         } catch (error: any) {
             const errorMessage = error?.message || "Erro ao realizar registro. Verifique os dados e tente novamente.";
             showSnackbar(errorMessage, "error");

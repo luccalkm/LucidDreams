@@ -1,5 +1,4 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import LoginLayout from "./components/layouts/LoginLayout";
 import MainLayout from "./components/layouts/MainLayout";
 import LoginPage from "./pages/auth/Login";
@@ -9,10 +8,11 @@ import { Home } from "./pages/home/Home";
 import { SnackbarProvider } from "./context/SnackbarContext";
 import { MyDreams } from "./pages/Dreams/MyDreams/MyDreams";
 import { RegisterDream } from "./pages/register/RegisterDream";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
     return (
-        <>
+        <AuthProvider>
             <BrowserRouter>
                 <SnackbarProvider>
                     <Routes>
@@ -29,7 +29,7 @@ function App() {
                     </Routes>
                 </SnackbarProvider>
             </BrowserRouter>
-        </>
+        </AuthProvider>
     );
 }
 

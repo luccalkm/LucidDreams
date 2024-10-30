@@ -13,6 +13,8 @@ import GoogleIcon from '@mui/icons-material/Google';
 import { UserLoginDTO } from "../../dtos/UserDTOs";
 import { useSnackbar } from "../../context/SnackbarContext";
 import { validateEmail } from "../../utils/validationsUtils";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const LoginPage = () => {
     const [loginForm, setLoginForm] = useState<UserLoginDTO>({
@@ -22,7 +24,9 @@ const LoginPage = () => {
     const theme = useTheme();
     const [loading, setLoading] = useState(false);
     const { showSnackbar } = useSnackbar();
-    
+    const navigate = useNavigate();
+    const authContext = useAuth();
+
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         setLoading(true);
@@ -31,10 +35,10 @@ const LoginPage = () => {
 
         if (!loginForm.email || !loginForm.password)
             errorMessage = "Todos os campos são obrigatórios.";
-        
+
         if (errorMessage === "" && !validateEmail(loginForm.email))
             errorMessage = "O E-mail fornecido não é válido.";
-        
+
         if (errorMessage) {
             showSnackbar(errorMessage, "error");
             setLoading(false);
@@ -42,11 +46,18 @@ const LoginPage = () => {
         }
 
         try {
+            console.log(loginForm)
             const response = await loginUser(loginForm);
-
-            if(!response.success)
+            if (!response.success)
                 throw new Error(response?.message);
 
+            showSnackbar("Login realizado com sucesso! Redirecionando para página principal...", "success");
+
+            authContext?.login(response.data!);
+
+            setTimeout(() => {
+                navigate('/');
+            }, 1500);
         } catch (error: any) {
             const errorMessage = error?.message || "Erro ao realizar login. Verifique os dados e tente novamente.";
             showSnackbar(errorMessage, "error");
@@ -55,7 +66,7 @@ const LoginPage = () => {
         }
     };
 
-    const handleChange = (e) => {
+    const handleChange = (e: any) => {
         const { name, value } = e.target;
 
         setLoginForm((prev) => ({
@@ -68,8 +79,9 @@ const LoginPage = () => {
         setLoading(true);
         try {
             await signInWithGoogle();
-        } catch (error) {
-            console.error("Erro ao fazer login com Google:", error);
+        } catch (error: any) {
+             const errorMessage = error?.message || "Erro ao realizar login com o google.";
+            showSnackbar(errorMessage, "error");
         } finally {
             setLoading(false);
         }

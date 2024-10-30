@@ -15,9 +15,9 @@ import { mapUserToDTO } from "../utils/mappers";
 
 export const loginUser = async (credential: UserLoginDTO): Promise<ResponseDTO<UserResponseLoginDTO | null>> => {
     try {
-        const signInMethods = await fetchSignInMethodsForEmail(auth, credential.email);
-        if (signInMethods.length === 0) 
-            return createResponse(false, null, "Usuário não encontrado.");
+        // const signInMethods = await fetchSignInMethodsForEmail(auth, credential.email);
+        // if (signInMethods.length === 0) 
+        //     return createResponse(false, null, "Usuário não encontrado.");
 
         const userCredential: UserCredential = await signInWithEmailAndPassword(auth, credential.email, credential.password);
         const userResponseDTO: UserResponseLoginDTO = {
